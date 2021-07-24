@@ -12,7 +12,7 @@ interface NoBrokerDao {
     fun insertData(noBrokerDataEntity: NoBrokerDataEntity)
 
     @Query(value ="select * from NoBroker order by id asc")
-    fun getData(): LiveData<List<NoBrokerDataEntity>>
+    fun getData(): LiveData<MutableList<NoBrokerDataEntity>>
 
 
 }

@@ -2,11 +2,7 @@ package com.example.nobroker.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class NoBrokerResponse(
 
-    @field:SerializedName("NoBrokerResponse")
-    val noBrokerResponse: List<NoBrokerResponseItem?>? = null
-)
 
 data class NoBrokerResponseItem(
 
