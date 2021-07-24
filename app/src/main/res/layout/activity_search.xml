@@ -15,27 +15,27 @@
         android:layout_height="wrap_content">
 
 
-        <ImageView
-            android:id="@+id/inboxPageSearchBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:background="@drawable/rectangle"
-            android:padding="@dimen/dp_8"
-            android:src="@drawable/ic_loupe" />
+<!--        <ImageView-->
+<!--            android:id="@+id/inboxPageSearchBtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="@dimen/dp_20"-->
+<!--            android:layout_marginLeft="@dimen/dp_20"-->
+<!--            android:background="@drawable/rectangle"-->
+<!--            android:padding="@dimen/dp_8"-->
+<!--            android:src="@drawable/ic_loupe" />-->
 
-        <EditText
-            android:id="@+id/inboxPageSearchBar"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/sbSearchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_10"
-            android:layout_toRightOf="@id/inboxPageSearchBtn"
             android:background="@drawable/rectangle"
-            android:hint="@string/search"
+            app:queryHint="@string/search"
             android:maxLines="1"
-            android:padding="@dimen/dp_5"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@android:color/transparent"
             android:textColorHint="@color/light_greyy"
             android:textSize="@dimen/sp_18" />
 
@@ -48,6 +48,7 @@
         android:id="@+id/rvSearchActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -3,6 +3,8 @@ package com.example.nobroker.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.nobroker.R
@@ -13,9 +15,12 @@ import com.example.nobroker.views.SearchActivity
 
 class SearchActivityAdapter(
     val detailsList: MutableList<NoBrokerDataEntity>,
-    val itemClickListener: onItemClickListener
+    val itemClickListener: onItemClickListener,
+
 ) :
-    RecyclerView.Adapter<SearchActivityViewHolder>() {
+    RecyclerView.Adapter<SearchActivityViewHolder>(),Filterable {
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchActivityViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.search_activity_item_layout, parent, false)
@@ -36,5 +41,9 @@ class SearchActivityAdapter(
 
     override fun getItemCount(): Int {
         return detailsList.size
+    }
+
+    override fun getFilter(): Filter {
+        TODO("Not yet implemented")
     }
 }

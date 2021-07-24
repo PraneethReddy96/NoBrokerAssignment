@@ -3,6 +3,8 @@ package com.example.nobroker.views
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +25,13 @@ import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity(),onItemClickListener {
 
-    lateinit var viewModel : NoBrokerViewModel
+    private lateinit var viewModel : NoBrokerViewModel
     var detailsList :MutableList<NoBrokerDataEntity>  = mutableListOf()
-    lateinit var searchAdapter : SearchActivityAdapter
-    lateinit var repository: Repository
-    lateinit var noBrokerDao: NoBrokerDao
+    var searchDataList :MutableList<NoBrokerDataEntity> = mutableListOf()
+    var searchAdapter = SearchActivityAdapter(searchDataList,this)
+    private lateinit var repository: Repository
+    private lateinit var noBrokerDao: NoBrokerDao
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +53,7 @@ class SearchActivity : AppCompatActivity(),onItemClickListener {
        }
 
         val llManager = LinearLayoutManager(this)
-        searchAdapter = SearchActivityAdapter(detailsList,this)
+        searchAdapter = SearchActivityAdapter(searchDataList,this)
         rvSearchActivity.layoutManager =llManager
         rvSearchActivity.adapter =searchAdapter
 
@@ -59,10 +63,79 @@ class SearchActivity : AppCompatActivity(),onItemClickListener {
 
             detailsList.clear()
             detailsList.addAll(it)
+            searchDataList.addAll(detailsList)
             searchAdapter.notifyDataSetChanged()
 
         })
+
+
+        createSearchView()
+
+
     }
+
+    private fun createSearchView() {
+
+
+
+        sbSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                TODO("Not yet implemented")
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                searchDataList.clear()
+                val searchText = newText!!
+
+                if(searchText.isNotEmpty()){
+
+
+                    detailsList.forEach {
+
+                        if(it.title!!.contains(searchText) || it.subTitle!!.contains(searchText)){
+
+                            searchDataList.add(it)
+                        }
+                    }
+                    rvSearchActivity.adapter!!.notifyDataSetChanged()
+                }else{
+
+                    searchDataList.clear()
+                    searchDataList.addAll(detailsList)
+                    rvSearchActivity.adapter!!.notifyDataSetChanged()
+
+
+                }
+
+
+                return false
+            }
+        })
+
+    }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_item,menu)
+//        val item = menu?.findItem(R.id.searchAction)
+//        val searchView = item?.actionView as android.widget.SearchView
+//
+
+
+
+
+
+
+
+
+
+//
+//        return super.onCreateOptionsMenu(menu)
+//    }
+
+
+
 
     private fun addTasksToDataBase() {
 
