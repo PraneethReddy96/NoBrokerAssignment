@@ -21,9 +21,17 @@ class NoBrokerViewModel(val repository: Repository) : ViewModel() {
                 emit(response?.data)
 
             }
+    }
 
 
-        }
+
+    fun checkDataBase() : Int{
+
+       val check = repository.checkData()
+
+        return check
+
+    }
 
 
 

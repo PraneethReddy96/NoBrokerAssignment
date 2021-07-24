@@ -15,4 +15,7 @@ interface NoBrokerDao {
     fun getData(): LiveData<MutableList<NoBrokerDataEntity>>
 
 
+    @Query("SELECT * FROM NoBroker ORDER BY id LIMIT 1")
+    fun loadLastTask(): LiveData<NoBrokerDataEntity?>?
+
 }

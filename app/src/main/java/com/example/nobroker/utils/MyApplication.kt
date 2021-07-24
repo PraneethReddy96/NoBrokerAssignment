@@ -1,4 +1,4 @@
-package com.example.nobroker.views
+package com.example.nobroker.utils
 
 import android.app.Application
 import com.example.nobroker.data.database.NoBrokerDataBase

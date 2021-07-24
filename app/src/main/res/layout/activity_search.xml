@@ -1,10 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".views.SearchActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/rlContainerAlpha"
+        android:layout_width="match_parent"
+        android:padding="@dimen/dp_10"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/inboxPageSearchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:background="@drawable/rectangle"
+            android:padding="@dimen/dp_8"
+            android:src="@drawable/ic_loupe" />
+
+        <EditText
+            android:id="@+id/inboxPageSearchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_toRightOf="@id/inboxPageSearchBtn"
+            android:background="@drawable/rectangle"
+            android:hint="@string/search"
+            android:maxLines="1"
+            android:padding="@dimen/dp_5"
+            android:textColorHint="@color/light_greyy"
+            android:textSize="@dimen/sp_18" />
+
+
+    </RelativeLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchActivity"
@@ -16,4 +54,4 @@
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

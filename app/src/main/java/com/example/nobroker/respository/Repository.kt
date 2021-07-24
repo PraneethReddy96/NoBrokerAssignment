@@ -3,6 +3,7 @@ package com.example.nobroker.respository
 
 import androidx.lifecycle.LiveData
 import com.example.nobroker.data.database.NoBrokerDao
+import com.example.nobroker.data.database.NoBrokerDataBase
 import com.example.nobroker.data.database.NoBrokerDataEntity
 import com.example.nobroker.data.model.NoBrokerResponseItem
 import com.example.nobroker.data.remote.ApiClient
@@ -17,9 +18,7 @@ class Repository(val noBrokerDao: NoBrokerDao) {
 
 
 
-
-
-    suspend fun getData() : RetrofitNetworkRequestHandler.Resource<MutableList<NoBrokerResponseItem?>> {
+    suspend fun getData(): RetrofitNetworkRequestHandler.Resource<MutableList<NoBrokerResponseItem?>> {
 
         var response = apiClient.getDetails()
 
@@ -33,6 +32,20 @@ class Repository(val noBrokerDao: NoBrokerDao) {
     }
 
 
+    fun checkData(): Int {
+
+        var check = 0;
+
+        var data: LiveData<NoBrokerDataEntity?>? = noBrokerDao.loadLastTask()
+        if (data?.value != null) {
+
+            check = 1
+
+        }
+
+        return check
+    }
+
 
     fun getNoBrokerEntity(): LiveData<MutableList<NoBrokerDataEntity>> {
 
@@ -40,8 +53,6 @@ class Repository(val noBrokerDao: NoBrokerDao) {
         return noBrokerDao.getData()
 
     }
-
-
 
 
 }
