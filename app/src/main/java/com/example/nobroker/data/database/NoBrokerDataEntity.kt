@@ -1,4 +1,4 @@
-package com.example.nobroker.database
+package com.example.nobroker.data.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

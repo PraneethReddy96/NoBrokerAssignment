@@ -1,4 +1,4 @@
-package com.example.nobroker.model
+package com.example.nobroker.data.model
 
 import com.google.gson.annotations.SerializedName
 

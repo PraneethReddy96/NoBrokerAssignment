@@ -1,4 +1,4 @@
-package com.example.nobroker.database
+package com.example.nobroker.data.database
 
 import android.content.Context
 import androidx.room.Database
@@ -12,7 +12,16 @@ abstract class NoBrokerDataBase : RoomDatabase() {
 
     companion object {
 
+        @Volatile
         var INSTANCE: NoBrokerDataBase? = null
+        val LOCK = Any()
+
+        operator fun invoke(context: Context) = INSTANCE ?: synchronized(LOCK) {
+
+            INSTANCE ?: getNewsArticlesDatabase(context).also { INSTANCE = it }
+
+        }
+
 
         fun getNewsArticlesDatabase(context: Context): NoBrokerDataBase {
 

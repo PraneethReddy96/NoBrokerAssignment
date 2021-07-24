@@ -1,4 +1,4 @@
-package com.example.nobroker.database
+package com.example.nobroker.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -11,7 +11,7 @@ interface NoBrokerDao {
     @Insert
     fun insertData(noBrokerDataEntity: NoBrokerDataEntity)
 
-    @Query(value ="select * from NoBroker")
+    @Query(value ="select * from NoBroker order by id asc")
     fun getData(): LiveData<List<NoBrokerDataEntity>>
 
 
