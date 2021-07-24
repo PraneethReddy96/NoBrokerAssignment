@@ -1,7 +1,8 @@
-package com.example.nobroker
+package com.example.nobroker.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.nobroker.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
