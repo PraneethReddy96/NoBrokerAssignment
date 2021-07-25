@@ -3,7 +3,6 @@ package com.example.nobroker.views
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -52,6 +51,7 @@ class SearchActivity : AppCompatActivity(), onItemClickListener {
 
         viewModel.retrieveNoBrokerDataEntity().observe(this, Observer {
 
+     /* stops the shimmer effect after data is loaded*/
             shimmerFrameLayout.stopShimmer()
             shimmerFrameLayout.visibility = View.GONE
             rvSearchActivity.visibility = View.VISIBLE
