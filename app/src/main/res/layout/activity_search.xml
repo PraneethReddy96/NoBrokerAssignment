@@ -30,7 +30,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginRight="@dimen/dp_10"
             android:background="@drawable/rectangle"
             app:queryHint="@string/search"
             android:maxLines="1"
@@ -43,12 +42,59 @@
     </RelativeLayout>
 
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <!-- Adding 15 rows of placeholders -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+
+            <include layout="@layout/shimmer_placeholder_layout" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_5"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

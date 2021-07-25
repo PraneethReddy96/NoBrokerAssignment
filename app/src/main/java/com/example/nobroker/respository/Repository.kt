@@ -17,7 +17,9 @@ class Repository(val noBrokerDao: NoBrokerDao) {
     val requestHandler = RetrofitNetworkRequestHandler.ResponseHandler()
 
 
-
+    /*
+    Fetches the data from Response class through apiClient , handles  through request handler and returns the response.
+     */
     suspend fun getData(): RetrofitNetworkRequestHandler.Resource<MutableList<NoBrokerResponseItem?>> {
 
         var response = apiClient.getDetails()
@@ -32,21 +34,22 @@ class Repository(val noBrokerDao: NoBrokerDao) {
     }
 
 
+    /* function to check whether database is empty , returns 1 if true, else 0*/
     fun checkData(): Int {
-
-        var check = 0;
-
+        var check = 0
         var data: LiveData<NoBrokerDataEntity?>? = noBrokerDao.loadLastTask()
-        if (data?.value != null) {
+        if (data == null) {
 
             check = 1
-
         }
-
         return check
     }
 
 
+
+    /*
+    Returns mutable Live Data from the Dao interface, by using noBrokerDao object
+     */
     fun getNoBrokerEntity(): LiveData<MutableList<NoBrokerDataEntity>> {
 
 

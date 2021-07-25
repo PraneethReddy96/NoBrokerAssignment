@@ -9,7 +9,7 @@ import com.example.nobroker.R
 
 class SearchActivityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-
+    /* initializing the views from the item layout*/
     var ivImage = view.findViewById<ImageView>(R.id.ivSearchImage)
     var tvTitle = view.findViewById<TextView>(R.id.tvSearchTitle)
     var tvSubTitle = view.findViewById<TextView>(R.id.tvSearchDescription)

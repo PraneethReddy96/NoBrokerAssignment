@@ -18,7 +18,7 @@ class SearchActivityAdapter(
     val itemClickListener: onItemClickListener,
 
 ) :
-    RecyclerView.Adapter<SearchActivityViewHolder>(),Filterable {
+    RecyclerView.Adapter<SearchActivityViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchActivityViewHolder {
@@ -43,7 +43,5 @@ class SearchActivityAdapter(
         return detailsList.size
     }
 
-    override fun getFilter(): Filter {
-        TODO("Not yet implemented")
-    }
+
 }

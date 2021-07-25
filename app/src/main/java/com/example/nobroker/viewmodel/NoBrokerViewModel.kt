@@ -13,7 +13,7 @@ class NoBrokerViewModel(val repository: Repository) : ViewModel() {
 
 
 
-
+/* invokes the addition of data into entity while fetching back the response from the repository */
     fun addToDataBase() : LiveData<MutableList<NoBrokerResponseItem?>?>{
 
         return liveData(Dispatchers.IO){
@@ -24,7 +24,7 @@ class NoBrokerViewModel(val repository: Repository) : ViewModel() {
     }
 
 
-
+/* retrieves the data whether data base is empty , and passes on to the subscribers*/
     fun checkDataBase() : Int{
 
        val check = repository.checkData()
@@ -34,7 +34,7 @@ class NoBrokerViewModel(val repository: Repository) : ViewModel() {
     }
 
 
-
+/* retrieves the  list of entity, and waits for being subscribed */
     fun retrieveNoBrokerDataEntity() : LiveData<MutableList<NoBrokerDataEntity>>{
 
         return repository.getNoBrokerEntity()

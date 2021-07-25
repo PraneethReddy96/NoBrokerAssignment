@@ -1,5 +1,3 @@
-
-
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,6 +15,7 @@ class RetrofitGenerator {
         private val httpLoggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
+        /* returns retrofit instance*/
         fun getInstance(): Retrofit {
             val retrofitBuilder = Retrofit.Builder()
                 .baseUrl("https://api.jsonbin.io")

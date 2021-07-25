@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -23,44 +24,37 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchActivity : AppCompatActivity(),onItemClickListener {
+class SearchActivity : AppCompatActivity(), onItemClickListener {
 
-    private lateinit var viewModel : NoBrokerViewModel
-    var detailsList :MutableList<NoBrokerDataEntity>  = mutableListOf()
-    var searchDataList :MutableList<NoBrokerDataEntity> = mutableListOf()
-    var searchAdapter = SearchActivityAdapter(searchDataList,this)
+    private lateinit var viewModel: NoBrokerViewModel
+    var detailsList: MutableList<NoBrokerDataEntity> = mutableListOf()
+    var searchDataList: MutableList<NoBrokerDataEntity> = mutableListOf()
+    var searchAdapter = SearchActivityAdapter(searchDataList, this)
     private lateinit var repository: Repository
     private lateinit var noBrokerDao: NoBrokerDao
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_NoBroker)
         setContentView(R.layout.activity_search)
+        initializeViewModelAndRepository()
+        checkDataBase()
+        bindRecyclerViewDataAndAdapter()
+        buildRecyclerViewData()
+        createSearchView()
+    }
 
-
-        noBrokerDao = NoBrokerDataBase.getNewsArticlesDatabase(this).getNoBrokerDao()
-        repository = (application as MyApplication).repository
-        val viewModelFactory = NoBrokerViewModelFactory(repository)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoBrokerViewModel::class.java)
-
-
-
-       if( viewModel.checkDataBase() == 0){
-
-//           addTasksToDataBase()
-
-       }
-
-        val llManager = LinearLayoutManager(this)
-        searchAdapter = SearchActivityAdapter(searchDataList,this)
-        rvSearchActivity.layoutManager =llManager
-        rvSearchActivity.adapter =searchAdapter
-
-
+    /*
+   Function which uses viewModel to observe the data and build it into the list for recycler view.
+   */
+    private fun buildRecyclerViewData() {
 
         viewModel.retrieveNoBrokerDataEntity().observe(this, Observer {
 
+            shimmerFrameLayout.stopShimmer()
+            shimmerFrameLayout.visibility = View.GONE
+            rvSearchActivity.visibility = View.VISIBLE
             detailsList.clear()
             detailsList.addAll(it)
             searchDataList.addAll(detailsList)
@@ -68,15 +62,48 @@ class SearchActivity : AppCompatActivity(),onItemClickListener {
 
         })
 
+    }
 
-        createSearchView()
 
+    /*
+Function which checks the database, before inserting the values into the table.
+     */
+    private fun checkDataBase() {
+
+        if (viewModel.checkDataBase() == 0) {
+
+            addTasksToDataBase()
+
+        }
+    }
+
+
+    /*
+Initializing the viewModel and passing he repository object into the view model.
+     */
+    private fun initializeViewModelAndRepository() {
+        repository = (application as MyApplication).repository
+        val viewModelFactory = NoBrokerViewModelFactory(repository)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoBrokerViewModel::class.java)
 
     }
 
+
+    /*
+Function to set the adapter of the recycler view.
+     */
+    private fun bindRecyclerViewDataAndAdapter() {
+
+        val llManager = LinearLayoutManager(this)
+        searchAdapter = SearchActivityAdapter(searchDataList, this)
+        rvSearchActivity.layoutManager = llManager
+        rvSearchActivity.adapter = searchAdapter
+    }
+
+    /*
+Used to implement the search feature from the recycler view, and fetch results.
+     */
     private fun createSearchView() {
-
-
 
         sbSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
@@ -89,55 +116,37 @@ class SearchActivity : AppCompatActivity(),onItemClickListener {
                 searchDataList.clear()
                 val searchText = newText!!
 
-                if(searchText.isNotEmpty()){
+                if (searchText.isNotEmpty()) {
 
 
                     detailsList.forEach {
 
-                        if(it.title!!.contains(searchText) || it.subTitle!!.contains(searchText)){
+                        if (it.title!!.contains(searchText) || it.subTitle!!.contains(searchText)) {
 
                             searchDataList.add(it)
                         }
                     }
                     rvSearchActivity.adapter!!.notifyDataSetChanged()
-                }else{
+                } else {
 
                     searchDataList.clear()
                     searchDataList.addAll(detailsList)
                     rvSearchActivity.adapter!!.notifyDataSetChanged()
 
-
                 }
-
-
                 return false
             }
         })
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_item,menu)
-//        val item = menu?.findItem(R.id.searchAction)
-//        val searchView = item?.actionView as android.widget.SearchView
-//
+    /*
 
-
-
-
-
-
-
-
-
-//
-//        return super.onCreateOptionsMenu(menu)
-//    }
-
-
-
-
+Function to add data into Database
+     */
     private fun addTasksToDataBase() {
+
+        noBrokerDao = NoBrokerDataBase.getNewsArticlesDatabase(this).getNoBrokerDao()
 
         viewModel.addToDataBase().observe(this, Observer {
 
@@ -157,15 +166,35 @@ class SearchActivity : AppCompatActivity(),onItemClickListener {
 
     }
 
+    /*
+
+function to pass data to preview activity
+
+     */
     override fun onItemClicked(entity: NoBrokerDataEntity) {
 
-        val intent = Intent(this,PreviewActivity::class.java)
-        intent.putExtra("image",entity.image.toString())
-        intent.putExtra("title",entity.title.toString())
-        intent.putExtra("subTitle",entity.subTitle.toString())
+        val intent = Intent(this, PreviewActivity::class.java)
+        intent.putExtra("image", entity.image.toString())
+        intent.putExtra("title", entity.title.toString())
+        intent.putExtra("subTitle", entity.subTitle.toString())
         startActivity(intent)
 
     }
 
+
+    /*
+
+To start/stop the shimmer effect.
+
+     */
+    override fun onResume() {
+        super.onResume()
+        shimmerFrameLayout.startShimmer()
+    }
+
+    override fun onPause() {
+        shimmerFrameLayout.stopShimmer()
+        super.onPause()
+    }
 
 }

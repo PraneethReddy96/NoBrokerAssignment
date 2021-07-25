@@ -3,7 +3,7 @@ package com.example.nobroker.data.model
 import com.google.gson.annotations.SerializedName
 
 
-
+/* Model data class obtained from the response*/
 data class NoBrokerResponseItem(
 
     @field:SerializedName("image")
