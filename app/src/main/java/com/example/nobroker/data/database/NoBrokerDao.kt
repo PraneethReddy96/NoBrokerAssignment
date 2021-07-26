@@ -18,6 +18,6 @@ interface NoBrokerDao {
 
     /* Function to check whether the table is empty */
     @Query("SELECT * FROM NoBroker ORDER BY id LIMIT 1")
-    fun loadLastTask(): LiveData<NoBrokerDataEntity?>?
+    fun loadLastTask(): NoBrokerDataEntity
 
 }

@@ -12,30 +12,31 @@ import kotlinx.coroutines.Dispatchers
 class NoBrokerViewModel(val repository: Repository) : ViewModel() {
 
 
+    /* invokes the addition of data into entity while fetching back the response from the repository */
+    fun addToDataBase(): LiveData<MutableList<NoBrokerResponseItem?>?> {
 
-/* invokes the addition of data into entity while fetching back the response from the repository */
-    fun addToDataBase() : LiveData<MutableList<NoBrokerResponseItem?>?>{
+        return liveData(Dispatchers.IO) {
+            val response = repository.getData()
+            emit(response?.data)
 
-        return liveData(Dispatchers.IO){
-                val response = repository.getData()
-                emit(response?.data)
-
-            }
+        }
     }
 
 
-/* retrieves the data whether data base is empty , and passes on to the subscribers*/
-    fun checkDataBase() : Int{
+    /* retrieves the data whether data base is empty , and passes on to the subscribers*/
+    fun checkDataBase(): LiveData<Int> {
 
-       val check = repository.checkData()
+        return liveData(Dispatchers.IO) {
+            val check = repository.checkData()
+            emit(check)
+        }
 
-        return check
 
     }
 
 
-/* retrieves the  list of entity, and waits for being subscribed */
-    fun retrieveNoBrokerDataEntity() : LiveData<MutableList<NoBrokerDataEntity>>{
+    /* retrieves the  list of entity, and waits for being subscribed */
+    fun retrieveNoBrokerDataEntity(): LiveData<MutableList<NoBrokerDataEntity>> {
 
         return repository.getNoBrokerEntity()
     }

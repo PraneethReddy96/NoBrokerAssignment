@@ -28,7 +28,7 @@ class SearchActivity : AppCompatActivity(), onItemClickListener {
     private lateinit var viewModel: NoBrokerViewModel
     var detailsList: MutableList<NoBrokerDataEntity> = mutableListOf()
     var searchDataList: MutableList<NoBrokerDataEntity> = mutableListOf()
-    var searchAdapter = SearchActivityAdapter(searchDataList, this)
+    lateinit var searchAdapter: SearchActivityAdapter
     private lateinit var repository: Repository
     private lateinit var noBrokerDao: NoBrokerDao
 
@@ -51,7 +51,7 @@ class SearchActivity : AppCompatActivity(), onItemClickListener {
 
         viewModel.retrieveNoBrokerDataEntity().observe(this, Observer {
 
-     /* stops the shimmer effect after data is loaded*/
+            /* stops the shimmer effect after data is loaded*/
             shimmerFrameLayout.stopShimmer()
             shimmerFrameLayout.visibility = View.GONE
             rvSearchActivity.visibility = View.VISIBLE
@@ -70,11 +70,19 @@ Function which checks the database, before inserting the values into the table.
      */
     private fun checkDataBase() {
 
-        if (viewModel.checkDataBase() == 0) {
+        viewModel.checkDataBase().observe(this, Observer {
 
-            addTasksToDataBase()
+            if(it == 1){
 
-        }
+                addTasksToDataBase()
+
+            }
+
+        })
+
+
+
+
     }
 
 
@@ -141,7 +149,6 @@ Used to implement the search feature from the recycler view, and fetch results.
     }
 
     /*
-
 Function to add data into Database
      */
     private fun addTasksToDataBase() {
@@ -167,9 +174,7 @@ Function to add data into Database
     }
 
     /*
-
 function to pass data to preview activity
-
      */
     override fun onItemClicked(entity: NoBrokerDataEntity) {
 
@@ -183,9 +188,7 @@ function to pass data to preview activity
 
 
     /*
-
 To start/stop the shimmer effect.
-
      */
     override fun onResume() {
         super.onResume()

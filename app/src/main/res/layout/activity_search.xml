@@ -15,15 +15,6 @@
         android:layout_height="wrap_content">
 
 
-<!--        <ImageView-->
-<!--            android:id="@+id/inboxPageSearchBtn"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="@dimen/dp_20"-->
-<!--            android:layout_marginLeft="@dimen/dp_20"-->
-<!--            android:background="@drawable/rectangle"-->
-<!--            android:padding="@dimen/dp_8"-->
-<!--            android:src="@drawable/ic_loupe" />-->
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/sbSearchBar"

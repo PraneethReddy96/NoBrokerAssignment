@@ -1,9 +1,10 @@
 package com.example.nobroker.respository
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import com.example.nobroker.data.database.NoBrokerDao
-import com.example.nobroker.data.database.NoBrokerDataBase
 import com.example.nobroker.data.database.NoBrokerDataEntity
 import com.example.nobroker.data.model.NoBrokerResponseItem
 import com.example.nobroker.data.remote.ApiClient
@@ -15,6 +16,7 @@ class Repository(val noBrokerDao: NoBrokerDao) {
 
     val apiClient = RetrofitGenerator.getInstance().create(ApiClient::class.java)
     val requestHandler = RetrofitNetworkRequestHandler.ResponseHandler()
+
 
 
     /*
@@ -37,11 +39,14 @@ class Repository(val noBrokerDao: NoBrokerDao) {
     /* function to check whether database is empty , returns 1 if true, else 0*/
     fun checkData(): Int {
         var check = 0
-        var data: LiveData<NoBrokerDataEntity?>? = noBrokerDao.loadLastTask()
-        if (data == null) {
 
-            check = 1
-        }
+        if (noBrokerDao.loadLastTask() == null) {
+
+                check = 1
+            }
+
+
+        Log.d("TAG", check.toString())
         return check
     }
 
