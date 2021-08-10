@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+
 /*
 
 An entity refers to a table, here a table with a predefined structure is created.

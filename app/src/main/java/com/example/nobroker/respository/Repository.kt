@@ -1,37 +1,52 @@
 package com.example.nobroker.respository
 
-
+import RetrofitNetworkRequestHandler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.nobroker.data.database.NoBrokerDao
 import com.example.nobroker.data.database.NoBrokerDataEntity
-import com.example.nobroker.data.model.NoBrokerResponseItem
 import com.example.nobroker.data.remote.ApiClient
-import kotlinx.coroutines.CoroutineScope
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class Repository(val noBrokerDao: NoBrokerDao) {
+@ActivityRetainedScoped
+class Repository @Inject constructor(val apiClient: ApiClient, val noBrokerDao: NoBrokerDao) {
 
-    val apiClient = RetrofitGenerator.getInstance().create(ApiClient::class.java)
-    val requestHandler = RetrofitNetworkRequestHandler.ResponseHandler()
+
 
 
 
     /*
     Fetches the data from Response class through apiClient , handles  through request handler and returns the response.
      */
-    suspend fun getData(): RetrofitNetworkRequestHandler.Resource<MutableList<NoBrokerResponseItem?>> {
+    suspend fun getData() {
 
         var response = apiClient.getDetails()
 
-        try {
-            return requestHandler.handleSuccess(response)
+//        try {
+//            requestHandler.handleSuccess(response)
+//
+//        } catch (e: Exception) {
+//            requestHandler.handleException(e)
+//        }
 
-        } catch (e: Exception) {
-            return requestHandler.handleException(e)
+
+        liveData(Dispatchers.IO) {
+
+            emit(response)
         }
+
+        for (i in response?.indices!!) {
+            var NoBrokerDataEntity =
+                NoBrokerDataEntity(response?.get(i)?.image,
+                    response?.get(i)?.title,
+                    response?.get(i)?.subTitle)
+
+            noBrokerDao.insertData(NoBrokerDataEntity)
+        }
+
 
     }
 
@@ -42,14 +57,13 @@ class Repository(val noBrokerDao: NoBrokerDao) {
 
         if (noBrokerDao.loadLastTask() == null) {
 
-                check = 1
-            }
+            check = 1
+        }
 
 
         Log.d("TAG", check.toString())
         return check
     }
-
 
 
     /*

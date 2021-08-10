@@ -1,6 +1,5 @@
 package com.example.nobroker.data.remote
 
-
 import com.example.nobroker.data.model.NoBrokerResponseItem
 import retrofit2.http.GET
 

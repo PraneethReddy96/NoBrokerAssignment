@@ -1,22 +1,36 @@
 package com.example.nobroker.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.nobroker.R
-import kotlinx.android.synthetic.main.activity_preview.*
+
 
 class PreviewActivity : AppCompatActivity() {
 
-   private lateinit var image: String
-   private lateinit var title: String
-   private lateinit var subTitle: String
+
+    lateinit var ivPreViewImage: ImageView
+    lateinit var tvPreviewTitle: TextView
+    lateinit var tvPreviewSubTitle: TextView
+    private lateinit var image: String
+    private lateinit var title: String
+    private lateinit var subTitle: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_NoBroker)
         setContentView(R.layout.activity_preview)
+        initViews()
         getIntents()
         setViews()
+
+    }
+
+    private fun initViews() {
+        ivPreViewImage = findViewById<ImageView>(R.id.ivPreViewImage)
+        tvPreviewTitle = findViewById<TextView>(R.id.tvPreviewTitle)
+        tvPreviewSubTitle = findViewById<TextView>(R.id.tvPreviewSubTitle)
 
     }
 

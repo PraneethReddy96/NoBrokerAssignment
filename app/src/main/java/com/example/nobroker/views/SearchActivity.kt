@@ -1,36 +1,35 @@
 package com.example.nobroker.views
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.nobroker.R
 import com.example.nobroker.adapter.SearchActivityAdapter
-import com.example.nobroker.data.database.NoBrokerDao
-import com.example.nobroker.data.database.NoBrokerDataBase
 import com.example.nobroker.data.database.NoBrokerDataEntity
-import com.example.nobroker.respository.Repository
-import com.example.nobroker.utils.MyApplication
 import com.example.nobroker.utils.onItemClickListener
 import com.example.nobroker.viewmodel.NoBrokerViewModel
-import com.example.nobroker.viewmodel.NoBrokerViewModelFactory
-import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.facebook.shimmer.ShimmerFrameLayout
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity(), onItemClickListener {
 
-    private lateinit var viewModel: NoBrokerViewModel
+    private val viewModel by viewModels<NoBrokerViewModel>()
     var detailsList: MutableList<NoBrokerDataEntity> = mutableListOf()
     var searchDataList: MutableList<NoBrokerDataEntity> = mutableListOf()
     lateinit var searchAdapter: SearchActivityAdapter
-    private lateinit var repository: Repository
-    private lateinit var noBrokerDao: NoBrokerDao
+    val emptyDataBase = 1;
+    var rvSearchActivity: RecyclerView? = null
+    lateinit var shimmerFrameLayout  : ShimmerFrameLayout
+    lateinit var sbSearchBar : SearchView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,16 +48,18 @@ class SearchActivity : AppCompatActivity(), onItemClickListener {
    */
     private fun buildRecyclerViewData() {
 
+
         viewModel.retrieveNoBrokerDataEntity().observe(this, Observer {
 
-            /* stops the shimmer effect after data is loaded*/
-            shimmerFrameLayout.stopShimmer()
-            shimmerFrameLayout.visibility = View.GONE
-            rvSearchActivity.visibility = View.VISIBLE
+
             detailsList.clear()
             detailsList.addAll(it)
+            shimmerFrameLayout.stopShimmer()
+            shimmerFrameLayout.visibility = View.GONE
             searchDataList.addAll(detailsList)
+            rvSearchActivity?.visibility = View.VISIBLE
             searchAdapter.notifyDataSetChanged()
+
 
         })
 
@@ -72,7 +73,7 @@ Function which checks the database, before inserting the values into the table.
 
         viewModel.checkDataBase().observe(this, Observer {
 
-            if(it == 1){
+            if (it == emptyDataBase) {
 
                 addTasksToDataBase()
 
@@ -81,19 +82,17 @@ Function which checks the database, before inserting the values into the table.
         })
 
 
-
-
     }
 
 
     /*
 Initializing the viewModel and passing he repository object into the view model.
      */
-    private fun initializeViewModelAndRepository() {
-        repository = (application as MyApplication).repository
-        val viewModelFactory = NoBrokerViewModelFactory(repository)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoBrokerViewModel::class.java)
 
+    private fun initializeViewModelAndRepository() {
+       rvSearchActivity = findViewById<RecyclerView>(R.id.rvSearchActivity)
+        shimmerFrameLayout = findViewById<ShimmerFrameLayout>(R.id.shimmerFrameLayout)
+        sbSearchBar = findViewById<SearchView>(R.id.sbSearchBar)
     }
 
 
@@ -104,8 +103,8 @@ Function to set the adapter of the recycler view.
 
         val llManager = LinearLayoutManager(this)
         searchAdapter = SearchActivityAdapter(searchDataList, this)
-        rvSearchActivity.layoutManager = llManager
-        rvSearchActivity.adapter = searchAdapter
+        rvSearchActivity?.layoutManager = llManager
+        rvSearchActivity?.adapter = searchAdapter
     }
 
     /*
@@ -134,12 +133,12 @@ Used to implement the search feature from the recycler view, and fetch results.
                             searchDataList.add(it)
                         }
                     }
-                    rvSearchActivity.adapter!!.notifyDataSetChanged()
+                    rvSearchActivity?.adapter!!.notifyDataSetChanged()
                 } else {
 
                     searchDataList.clear()
                     searchDataList.addAll(detailsList)
-                    rvSearchActivity.adapter!!.notifyDataSetChanged()
+                    rvSearchActivity?.adapter!!.notifyDataSetChanged()
 
                 }
                 return false
@@ -153,23 +152,8 @@ Function to add data into Database
      */
     private fun addTasksToDataBase() {
 
-        noBrokerDao = NoBrokerDataBase.getNewsArticlesDatabase(this).getNoBrokerDao()
 
-        viewModel.addToDataBase().observe(this, Observer {
-
-
-            CoroutineScope(Dispatchers.IO).launch {
-
-                for (i in it?.indices!!) {
-                    var NoBrokerDataEntity =
-                        NoBrokerDataEntity(it?.get(i)?.image,
-                            it?.get(i)?.title,
-                            it?.get(i)?.subTitle)
-
-                    noBrokerDao.insertData(NoBrokerDataEntity)
-                }
-            }
-        })
+        viewModel.addToDataBase()
 
     }
 
@@ -183,6 +167,7 @@ function to pass data to preview activity
         intent.putExtra("title", entity.title.toString())
         intent.putExtra("subTitle", entity.subTitle.toString())
         startActivity(intent)
+
 
     }
 

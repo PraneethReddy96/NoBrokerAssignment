@@ -3,8 +3,6 @@ package com.example.nobroker.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.nobroker.R
@@ -13,12 +11,12 @@ import com.example.nobroker.utils.onItemClickListener
 import com.example.nobroker.viewholder.SearchActivityViewHolder
 import com.example.nobroker.views.SearchActivity
 
+
 class SearchActivityAdapter(
     val detailsList: MutableList<NoBrokerDataEntity>,
     val itemClickListener: onItemClickListener,
 
-) :
-    RecyclerView.Adapter<SearchActivityViewHolder>() {
+    ) : RecyclerView.Adapter<SearchActivityViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchActivityViewHolder {

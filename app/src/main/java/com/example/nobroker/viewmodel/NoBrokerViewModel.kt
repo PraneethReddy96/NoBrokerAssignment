@@ -1,26 +1,36 @@
 package com.example.nobroker.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.nobroker.data.database.NoBrokerDataEntity
-import com.example.nobroker.data.model.NoBrokerResponseItem
 import com.example.nobroker.respository.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class NoBrokerViewModel(val repository: Repository) : ViewModel() {
+@HiltViewModel
+class NoBrokerViewModel @Inject constructor(
+    val repository: Repository
+) : ViewModel() {
 
 
     /* invokes the addition of data into entity while fetching back the response from the repository */
-    fun addToDataBase(): LiveData<MutableList<NoBrokerResponseItem?>?> {
+    fun addToDataBase(){
 
-        return liveData(Dispatchers.IO) {
-            val response = repository.getData()
-            emit(response?.data)
+        CoroutineScope(Dispatchers.IO).launch {
 
+            repository.getData()
         }
+
+
     }
+
 
 
     /* retrieves the data whether data base is empty , and passes on to the subscribers*/
