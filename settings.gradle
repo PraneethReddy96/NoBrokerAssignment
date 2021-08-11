@@ -2,3 +2,4 @@ rootProject.name = "NoBroker"
 include ':app'
 include ':tvModule'
 include ':myapplication'
+include ':myapplication2'
