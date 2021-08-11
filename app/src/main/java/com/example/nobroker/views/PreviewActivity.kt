@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.nobroker.R
 
 
+
 class PreviewActivity : AppCompatActivity() {
 
 
@@ -44,6 +45,7 @@ class PreviewActivity : AppCompatActivity() {
     /* function with parameters to set the data into the views*/
     private fun setViews() {
         Glide.with(ivPreViewImage).load(image).into(ivPreViewImage)
+
         tvPreviewTitle.setText(title)
         tvPreviewSubTitle.setText(subTitle)
     }

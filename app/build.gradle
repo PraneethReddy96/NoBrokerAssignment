@@ -87,4 +87,6 @@ dependencies {
     // Shimmer - shimmer effect for recyclerview
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.todkars:shimmer-recyclerview:0.4.0'
+
+    implementation 'com.github.PraneethReddy96:practice:v1.0-'
 }
